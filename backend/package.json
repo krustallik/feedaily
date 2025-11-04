@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test:calendar": "node testCalendarFetch.js"
+    "cov:be": "jest --coverage --passWithNoTests --config jest.config.cjs",
+    "cov:be:summary": "node -e \"const s=require('./coverage/be/coverage-summary.json');console.log('BE lines: '+s.total.lines.covered+'/'+s.total.lines.total+' ('+s.total.lines.pct+'%)')\""
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,7 @@
   "description": "",
   "type": "module",
   "dependencies": {
+    "@jest/globals": "^30.2.0",
     "@whiskeysockets/baileys": "^6.7.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
@@ -19,12 +21,17 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
-    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.5",
     "otp-generator": "^4.0.1",
     "sqlite3": "^5.1.7",
     "stripe": "^18.4.0",
     "twilio": "^5.8.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.28.5",
+    "babel-jest": "^30.2.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }

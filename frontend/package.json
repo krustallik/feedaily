@@ -7,14 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:fe": "vitest",
+    "cov:fe": "vitest run --coverage",
+    "cov:fe:summary": "node -e \"const s=require('./coverage/fe/coverage-summary.json');console.log(`FE lines: ${s.total.lines.covered}/${s.total.lines.total} (${s.total.lines.pct}%)`)\""
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.1.12",
     "clsx": "^2.1.1",
-    "embla-carousel-autoplay": "^8.6.0",
-    "embla-carousel-react": "^8.6.0",
+    "eslint-plugin-vitest": "^0.5.4",
     "file-saver": "^2.0.5",
     "gsap": "^3.13.0",
     "jspdf": "^3.0.1",
@@ -33,15 +35,20 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.0.7",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "jsdom": "^27.1.0",
     "postcss": "^8.5.6",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vitest": "^4.0.7"
   }
 }
