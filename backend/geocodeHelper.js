@@ -27,24 +27,20 @@ async function getPlaceNameFromCoords(lat, lon) {
  * @param {number} lon2 - Longitude of second point in decimal degrees
  * @returns {number} Distance in kilometers
  */
+const TO_RAD = Math.PI / 180;
+const R = 6371; // km
+
 function calculateDistance(lat1, lon1, lat2, lon2) {
-  // Earth's radius in kilometers
-  const R = 6371;
-  
-  // Convert latitude and longitude from degrees to radians
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  
-  // Haversine formula
-  const a = 
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  
+  const φ1 = lat1 * TO_RAD, φ2 = lat2 * TO_RAD;
+  const dφ = (lat2 - lat1) * TO_RAD;
+  const dλ = (lon2 - lon1) * TO_RAD;
+
+  const hφ = dφ * 0.5, hλ = dλ * 0.5;
+  const s1 = Math.sin(hφ);
+  const s2 = Math.sin(hλ);
+  const a = s1*s1 + Math.cos(φ1) * Math.cos(φ2) * s2*s2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c; // Distance in kilometers
-  
-  return distance;
+  return R * c;
 }
 
 export { getPlaceNameFromCoords, calculateDistance };

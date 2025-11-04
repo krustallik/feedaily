@@ -193,43 +193,26 @@ export function calculateFoodExpiryRate() {
 // 9. Average Delivery Distance
 export function calculateAverageDeliveryDistance() {
   return new Promise((resolve, reject) => {
-    const query = `
-      SELECT locationLat, locationLng, requesterLat, requesterLng
-      FROM donations 
-      WHERE locationLat IS NOT NULL 
-        AND locationLng IS NOT NULL 
-        AND requesterLat IS NOT NULL 
-        AND requesterLng IS NOT NULL
-        AND status = 'Delivered'
-    `;
+    const sql = `SELECT locationLat, locationLng, requesterLat, requesterLng
+                 FROM donations WHERE status='Delivered'`;
+    let sum = 0, count = 0;
 
-    db.all(query, (err, rows) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      if (rows.length === 0) {
-        resolve(0);
-        return;
-      }
-
-      const totalDistance = rows.reduce((sum, row) => {
-        return (
-          sum +
-          calculateDistance(
-            row.locationLat,
-            row.locationLng,
-            row.requesterLat,
-            row.requesterLng
-          )
-        );
-      }, 0);
-
-      resolve(totalDistance / rows.length);
-    });
+    db.each(
+        sql,
+        (err, r) => {
+          if (err) { reject(err); return; }
+          sum += calculateDistance(r.locationLat, r.locationLng, r.requesterLat, r.requesterLng);
+          count++;
+        },
+        (err) => {
+          if (err) { reject(err); return; }
+          resolve(count ? (sum / count) : 0);
+        }
+    );
   });
 }
+
+
 
 // 10. Delivery Time Efficiency
 export function calculateDeliveryTimeEfficiency() {

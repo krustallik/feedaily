@@ -7,6 +7,17 @@ const db = new sqlite3.Database('./users.db', (err) => {
   }
 });
 
+db.serialize(() => {
+    db.exec(`
+    PRAGMA journal_mode = WAL;
+    PRAGMA synchronous = NORMAL;
+    PRAGMA temp_store = MEMORY;
+    PRAGMA cache_size = -20000;   -- ~20MB кеш у RAM
+  `);
+
+    db.run("CREATE INDEX IF NOT EXISTS idx_donations_status ON donations(status)");
+});
+
 db.run(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
